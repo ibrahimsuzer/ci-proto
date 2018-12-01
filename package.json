@@ -1,0 +1,13 @@
+{
+  "name": "proto",
+  "version": "0.0.0",
+  "description": "Shared protocol buffer library",
+  "keywords": [],
+  "author": "CInkstone",
+  "license": "UNLICENSED",
+  "private": true,
+  "homepage": "http://cinkstone.com/",
+  "dependencies": {
+    "google-proto-files": "^0.18.0"
+  }
+}
