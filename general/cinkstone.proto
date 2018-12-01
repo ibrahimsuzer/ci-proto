@@ -1,0 +1,30 @@
+syntax = "proto3";
+package cinkstone;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+/*
+ * Shared services for all projects
+ */
+service AppService {
+	/// Get current version information
+	rpc GetVersion (google.protobuf.Empty) returns (GetVersionResponse) {
+		option (google.api.http) = {
+		get : "/api/version"
+		};
+	}
+}
+
+/*
+ * Version information
+ */
+message GetVersionResponse {
+	string commit = 1; // Commit SHA
+	string revision = 2; // Revision count
+	string branch = 3; // The branch of the build
+	string tag = 4; // Latest tag
+	google.protobuf.Timestamp build_date = 5; // Latest tag and its status
+}
+
