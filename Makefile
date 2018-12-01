@@ -15,16 +15,16 @@ install:
 	chmod +x /usr/local/bin/protoc
 
 	## Install NPM Packages
-    npm install
-    npm version ${TAG} --force --allow-same-version --no-git-tag-version
+	npm install
+	npm version ${TAG} --force --allow-same-version --no-git-tag-version
 
 lint:
 	@go get github.com/ckaznocha/protoc-gen-lint@v0.2.1
 	@protoc \
 	-I=./node_modules/google-proto-files \
 	-I. \
-    --lint_out=. \
-    ./general/*.proto
+	--lint_out=. \
+	./general/*.proto
 
 lock:
 
