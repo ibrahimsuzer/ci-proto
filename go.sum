@@ -1,0 +1,4 @@
+github.com/ckaznocha/protoc-gen-lint v0.2.1 h1:wP+SgbHat4ovpPQayCroxK/1pXtnBR4HIo9G+2gTnHU=
+github.com/ckaznocha/protoc-gen-lint v0.2.1/go.mod h1:EveTCMo4KBPAmWqVxMXUDrI/iV6v93ydJyZVdEYyFIg=
+github.com/golang/protobuf v1.2.0 h1:P3YflyNX/ehuJFLhxviNdFxQPkGK5cDcApsge1SqnvM=
+github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
