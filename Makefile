@@ -33,6 +33,28 @@ lock:
 	@GO111MODULE=off go get github.com/nilslice/protolock/...
 	@protolock status
 
+doc:
+	@mkdir -p public
+	@go get github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc
+	@protoc \
+		-I=./node_modules/google-proto-files \
+		-I. \
+		--doc_out=./public \
+		--doc_opt=html,proto.html \
+		./general/*.proto
+	@protoc \
+		-I=./node_modules/google-proto-files \
+		-I. \
+		--doc_out=./public \
+		--doc_opt=json,proto.json \
+		./general/*.proto
+	@protoc \
+		-I=./node_modules/google-proto-files \
+		-I. \
+		--doc_out=./public \
+		--doc_opt=markdown,proto.md \
+		./general/*.proto
+
 js:
 
 go:

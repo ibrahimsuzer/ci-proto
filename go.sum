@@ -8,4 +8,8 @@ github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5y
 github.com/nilslice/protolock v0.9.1 h1:EgAS8hdDJ5a5fl/Ae3JMzzslFx02w4xz6UJ+YhrPcrM=
 github.com/nilslice/protolock v0.9.1/go.mod h1:dLu7WreJYd4VRtzyIye1FeA2MOmMIp/eD3llQ4w7Lik=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/pseudomuto/protoc-gen-doc v1.1.0 h1:fJpnA9JaTm+7HDazYX1C7GYY+tH8JN1BZXOREEuqDIo=
+github.com/pseudomuto/protoc-gen-doc v1.1.0/go.mod h1:fwtQAY9erXp3mC92O8OTECnDlJT2r0Ff4KSEKbGEmy0=
+github.com/pseudomuto/protokit v0.1.0 h1:qitnhC5eQ3TrdH5BVrpipfc+I3ubXIq9mlQAklmfuwY=
+github.com/pseudomuto/protokit v0.1.0/go.mod h1:2PdH30hxVHsup8KpBTOXTBeMVhJZVio3Q8ViKSAXT0Q=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
