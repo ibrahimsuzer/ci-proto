@@ -1,0 +1,64 @@
+{
+  "definitions": [
+    {
+      "protopath": "general:/:cinkstone.proto",
+      "def": {
+        "messages": [
+          {
+            "name": "GetVersionResponse",
+            "fields": [
+              {
+                "id": 1,
+                "name": "commit",
+                "type": "string"
+              },
+              {
+                "id": 2,
+                "name": "revision",
+                "type": "string"
+              },
+              {
+                "id": 3,
+                "name": "branch",
+                "type": "string"
+              },
+              {
+                "id": 4,
+                "name": "tag",
+                "type": "string"
+              },
+              {
+                "id": 5,
+                "name": "build_date",
+                "type": "google.protobuf.Timestamp"
+              }
+            ]
+          }
+        ],
+        "services": [
+          {
+            "name": "AppService",
+            "rpcs": [
+              {
+                "name": "GetVersion",
+                "in_type": "google.protobuf.Empty",
+                "out_type": "GetVersionResponse"
+              }
+            ]
+          }
+        ],
+        "imports": [
+          {
+            "path": "google/api/annotations.proto"
+          },
+          {
+            "path": "google/protobuf/timestamp.proto"
+          },
+          {
+            "path": "google/protobuf/empty.proto"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "name": "proto",
+  "name": "cinkstone-proto",
   "version": "0.0.0",
   "description": "Shared protocol buffer library",
   "keywords": [],
@@ -8,6 +8,6 @@
   "private": true,
   "homepage": "http://cinkstone.com/",
   "dependencies": {
-    "google-proto-files": "^0.18.0"
+    "google-proto-files": "0.18.0"
   }
 }
