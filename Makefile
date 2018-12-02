@@ -2,7 +2,7 @@ SERVICE=cinkstone-proto
 COMMIT_ID=$(shell git rev-parse --short HEAD)
 REVISION_ID=$(shell git rev-list --count HEAD)
 BRANCH=$(shell git symbolic-ref --short HEAD)
-TAG=$(shell git describe --abbrev=0 --tags --broken)
+TAG=$(shell git describe --tags --broken | sed 's/-g[a-z0-9]\{7\}//')
 
 PROTOBUF=3.6.1
 
@@ -19,14 +19,19 @@ install:
 	npm version ${TAG} --force --allow-same-version --no-git-tag-version
 
 lint:
-	@go get github.com/ckaznocha/protoc-gen-lint@v0.2.1
+	@go get github.com/ckaznocha/protoc-gen-lint
 	@protoc \
-	-I=./node_modules/google-proto-files \
-	-I. \
-	--lint_out=. \
-	./general/*.proto
+		-I=./node_modules/google-proto-files \
+		-I. \
+		--lint_out=. \
+		./general/*.proto
 
 lock:
+	@go get github.com/nilslice/protolock
+    # Until go modules support installing binaries to GOBIN
+    # https://github.com/golang/go/issues/24250
+	@GO111MODULE=off go get github.com/nilslice/protolock/...
+	@protolock status
 
 js:
 
@@ -35,5 +40,7 @@ go:
 java:
 
 obj-c:
+
+swift:
 
 cleanup:

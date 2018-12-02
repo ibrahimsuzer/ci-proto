@@ -5,39 +5,64 @@ variables:
   # AUTO_DEVOPS_DOMAIN: domain.example.com
 
   # Auto Devops
-  POSTGRES_USER: user
-  POSTGRES_PASSWORD: testing-password
-  POSTGRES_ENABLED: "true"
-  POSTGRES_DB: $CI_ENVIRONMENT_SLUG
+  POSTGRES_USER:      user
+  POSTGRES_PASSWORD:  testing-password
+  POSTGRES_ENABLED:   "true"
+  POSTGRES_DB:        $CI_ENVIRONMENT_SLUG
   KUBERNETES_VERSION: 1.8.6
-  HELM_VERSION: 2.10.0
-  DOCKER_DRIVER: overlay2
+  HELM_VERSION:       2.10.0
+  DOCKER_DRIVER:      overlay2
 
   # CInkstone
-  SERVICE: cinkstone-proto
+  SERVICE:            cinkstone-proto
 
 stages:
   - test
 
 # TEST-----------------------------------------------------------------------
 
-code_quality:
-  stage: test
-  allow_failure: true
-  image:
-    name: golang:1.11.1
-  script:
+.essential:
+  before_script:
     - apt-get update && apt-get install -y build-essential unzip
     # Install NPM
     - curl -sL https://deb.nodesource.com/setup_11.x | bash -
     - apt-get install -y nodejs
+
+code_quality:
+  extends:       .essential
+  stage:         test
+  allow_failure: true
+  image:
+    name: golang:1.11.1
+  script:
     # LINT
     - make install
-    - make lint 2>> lint.log
+    - make lint 2>&1 | tee lint.log
   artifacts:
     name: "$CI_JOB_STAGE-$CI_JOB_NAME-$CI_COMMIT_SHA"
     paths:
       - lint.log
+    when: on_failure
+  only:
+    - branches
+  except:
+    variables:
+      - $CODE_QUALITY_DISABLED
+
+protolock:
+  extends:       .essential
+  stage:         test
+  allow_failure: true
+  image:
+    name: golang:1.11.1
+  script:
+    # PROTOLOCK
+    - make install
+    - make lock 2>&1 | tee lock.log
+  artifacts:
+    name: "$CI_JOB_STAGE-$CI_JOB_NAME-$CI_COMMIT_SHA"
+    paths:
+      - lock.log
     when: on_failure
   only:
     - branches
