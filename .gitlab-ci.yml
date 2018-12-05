@@ -114,9 +114,7 @@ js:
     #- git push origin master
 
   only:
-    - master
+    - branches
   except:
-    refs:
-      - tags
     variables:
       - $DEPLOYMENT_DISABLED
