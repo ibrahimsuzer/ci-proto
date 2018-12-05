@@ -14,7 +14,7 @@ stages:
   before_script:
     - apt-get update && apt-get install -y build-essential unzip
     # Install NPM
-    - curl -sL https://deb.nodesource.com/setup_11.x | bash -
+    - curl -sL https://deb.nodesource.com/setup_10.x | bash -
     - apt-get install -y nodejs
 
 code_quality:
@@ -69,7 +69,9 @@ pages:
     # DOC
     - make install
     - make doc
-    - cp -n public/proto.html public/index.html
+    - mkdir -p docs
+    - cp -Rfp docs/. public
+    - cp -fp public/proto.html public/index.html
   artifacts:
     name: "$CI_JOB_STAGE-$CI_JOB_NAME-$CI_COMMIT_SHA"
     paths:
@@ -80,3 +82,41 @@ pages:
   except:
     variables:
       - $GITLAB_PAGES_DISABLED
+      - $DEPLOYMENT_DISABLED
+
+js:
+  extends:       .essential
+  stage:         deploy
+  allow_failure: false
+  image:
+    name: golang:1.11.1
+  script:
+    # GENERATE JS CODE
+    - make install
+    # Generate current documentation
+    - make doc
+    # Generate Javascript files
+    - make js
+    # Clone and update javascript repository
+    - git clone --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com:CInkstone/cinkstone-proto/js.git js
+    - cp -Rfp docs/. out/docs
+    - cp -Rfp out/. js
+    # Set package version from temp file (created by "make js")
+    - cd js
+    - read TAG </tmp/tag
+    - npm version ${TAG} --force --allow-same-version --no-git-tag-version
+    # Commit & tag its new version
+    - read MESSAGE </tmp/message
+    - git add .
+    - git commit -m "${MESSAGE}"
+    - git tag -a "${TAG}" -m "${MESSAGE}"
+    # Push the repo
+    #- git push origin master
+
+  only:
+    - master
+  except:
+    refs:
+      - tags
+    variables:
+      - $DEPLOYMENT_DISABLED
