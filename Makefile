@@ -41,7 +41,7 @@ lock:
 	@protolock status
 
 doc:
-	@mkdir -p public
+	@mkdir -p docs
 	@go get github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc
 	@protoc \
 		-I=./node_modules/google-proto-files \
