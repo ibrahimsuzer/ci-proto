@@ -2,7 +2,7 @@ SERVICE:=cinkstone-proto
 COMMIT_ID:=$(shell git rev-parse --short HEAD)
 REVISION_ID:=$(shell git rev-list --count HEAD)
 BRANCH:=$(shell git symbolic-ref --short HEAD)
-TAG:=$(shell git describe --tags --broken | sed 's/-g[a-z0-9]\{7\}//')
+TAG:=$(shell git describe --tags --dirty | sed 's/-g[a-z0-9]\{7\}//')
 MESSAGE:=$(shell git log -1 --pretty=%B)
 
 VER_PROTOBUF:=3.6.1
