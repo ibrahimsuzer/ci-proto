@@ -108,6 +108,8 @@ js:
     # Commit & tag its new version
     - read MESSAGE </tmp/message
     - git add .
+    - git config --global user.name "${GITLAB_USER_NAME}"
+    - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git commit -m "${MESSAGE}"
     - git tag -a "${TAG}" -m "${MESSAGE}"
     # Push the repo
