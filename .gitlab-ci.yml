@@ -98,7 +98,7 @@ js:
     # Generate Javascript files
     - make js
     # Clone and update javascript repository
-    - git clone -branch devel --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/CInkstone/cinkstone-proto/js.git js
+    - git clone --branch devel --single-branch https://${CINK_JOB_USER}:${CINK_JOB_TOKEN}@gitlab.com/CInkstone/cinkstone-proto/js.git js
     - cp -Rfp docs/. out/docs
     - cp -Rfp out/. js
     # Set package version from temp file (created by "make js")
