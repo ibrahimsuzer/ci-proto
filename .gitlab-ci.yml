@@ -34,6 +34,7 @@ code_quality:
     when: on_failure
   only:
     - branches
+    - tags
   except:
     variables:
       - $CODE_QUALITY_DISABLED
@@ -55,6 +56,7 @@ protolock:
     when: on_failure
   only:
     - branches
+    - tags
   except:
     variables:
       - $CODE_QUALITY_DISABLED
@@ -79,6 +81,7 @@ pages:
     when: on_success
   only:
     - branches
+    - tags
   except:
     variables:
       - $GITLAB_PAGES_DISABLED
