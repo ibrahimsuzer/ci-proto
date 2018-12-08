@@ -113,7 +113,7 @@ js:
     - git commit -m "${MESSAGE}"
     - git tag -a "${TAG}" -m "${MESSAGE}"
     # Push the repo
-    - git push origin HEAD
+    - git push --tags origin HEAD
 
   only:
     - tags
