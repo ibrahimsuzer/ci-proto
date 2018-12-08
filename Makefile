@@ -7,6 +7,7 @@ MESSAGE:=$(shell git log -1 --pretty=%B)
 
 VER_PROTOBUF:=3.6.1
 VER_GRPCWEB:=1.0.3
+VER_GRPC-GO:="1.2.0"
 
 all: cleanup
 
@@ -75,6 +76,23 @@ js:
 
 
 go:
+	@mkdir -p out
+	@go get github.com/golang/protobuf/protoc-gen-go
+	# Until go modules support installing binaries to GOBIN
+	# https://github.com/golang/go/issues/24250
+	@GO111MODULE=off go get github.com/golang/protobuf/protoc-gen-go
+	@go get github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+	@go get github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
+
+	@protoc \
+		-I=./node_modules/google-proto-files \
+		-I. \
+		--go_out=plugins=grpc:./out \
+		--grpc-gateway_out=logtostderr=false:./out \
+		--swagger_out=logtostderr=false:./out \
+		./general/*.proto
+	@echo ${TAG} >/tmp/tag
+	@echo ${MESSAGE} >/tmp/message
 
 java:
 

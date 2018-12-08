@@ -1,5 +1,5 @@
 {
-  "name": "cinkstone-proto",
+  "name": "@cinkstone/proto",
   "version": "0.0.0",
   "description": "Shared protocol buffer library",
   "keywords": [],

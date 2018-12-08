@@ -6,10 +6,12 @@ variables:
 
 stages:
   - test
+  - staging
   - deploy
 
 # TEST-----------------------------------------------------------------------
 
+### ESSENTIAL DEPENDENCIES
 .essential:
   before_script:
     - apt-get update && apt-get install -y build-essential unzip
@@ -17,6 +19,7 @@ stages:
     - curl -sL https://deb.nodesource.com/setup_10.x | bash -
     - apt-get install -y nodejs
 
+### CODE QUALITY
 code_quality:
   extends:       .essential
   stage:         test
@@ -39,6 +42,7 @@ code_quality:
     variables:
       - $CODE_QUALITY_DISABLED
 
+### PROTOLOCK
 protolock:
   extends:       .essential
   stage:         test
@@ -61,10 +65,11 @@ protolock:
     variables:
       - $CODE_QUALITY_DISABLED
 
+### GITLAB PAGES
 pages:
   extends:       .essential
-  stage:         deploy
-  allow_failure: true
+  stage:         staging
+  allow_failure: false
   image:
     name: golang:1.11.1
   script:
@@ -78,6 +83,7 @@ pages:
     name: "$CI_JOB_STAGE-$CI_JOB_NAME-$CI_COMMIT_SHA"
     paths:
       - public
+      - docs
     when: on_success
   only:
     - branches
@@ -87,39 +93,73 @@ pages:
       - $GITLAB_PAGES_DISABLED
       - $DEPLOYMENT_DISABLED
 
-js:
+### PROTO CODE GENERATION
+.proto:
   extends:       .essential
   stage:         deploy
   allow_failure: false
   image:
-    name: golang:1.11.1
+    name:        golang:1.11.1
+  dependencies:
+    - pages
   script:
-    # GENERATE JS CODE
+    ## Clone and update repository
+    - git clone --branch master --single-branch https://${CINK_JOB_USER}:${CINK_JOB_TOKEN}@gitlab.com/CInkstone/cinkstone-proto/${LANG}.git ${LANG}
+    # Install dependencies
     - make install
-    # Generate current documentation
-    - make doc
-    # Generate Javascript files
-    - make js
-    # Clone and update javascript repository
-    - git clone --branch master --single-branch https://${CINK_JOB_USER}:${CINK_JOB_TOKEN}@gitlab.com/CInkstone/cinkstone-proto/js.git js
+    ## Generate proto code
+    - make -B ${LANG}
+    ## Save the output
+    - mkdir -p temp
+    - cp -fp /tmp/tag temp/tag
+    - cp -fp /tmp/message temp/message
+    ## Copy all into out folder
     - cp -Rfp docs/. out/docs
-    - cp -Rfp out/. js
+    - cp -Rfp out/. ${LANG}
+  except:
+    variables:
+      - $DEPLOYMENT_DISABLED
+
+### PUBLISH JS CODE
+js:
+  extends:      .proto
+  variables:
+    LANG:       "js"
+  after_script:
+    ## Read output
+    - read TAG <temp/tag
+    - read MESSAGE <temp/message
     # Set package version from temp file (created by "make js")
-    - cd js
-    - read TAG </tmp/tag
+    - cd ${LANG}
     - npm version ${TAG} --force --allow-same-version --no-git-tag-version
-    # Commit & tag its new version
-    - read MESSAGE </tmp/message
+    ## Commit & tag its new version
     - git add .
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git commit -m "${MESSAGE}"
     - git tag -a "${TAG}" -m "${MESSAGE}"
-    # Push the repo
+    ## Push the repo
     - git push --tags origin HEAD
-
   only:
     - tags
-  except:
-    variables:
-      - $DEPLOYMENT_DISABLED
+
+### PUBLISH GO CODE
+go:
+  extends:      .proto
+  variables:
+    LANG:       "go"
+  after_script:
+    ## Read output
+    - read TAG <temp/tag
+    - read MESSAGE <temp/message
+    ## Commit & tag its new version
+    - cd ${LANG}
+    - git add .
+    - git config --global user.name "${GITLAB_USER_NAME}"
+    - git config --global user.email "${GITLAB_USER_EMAIL}"
+    - git commit -m "${MESSAGE}"
+    - git tag -a "${TAG}" -m "${MESSAGE}"
+    ## Push the repo
+    - git push --tags origin HEAD
+  only:
+    - tags
