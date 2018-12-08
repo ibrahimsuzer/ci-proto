@@ -2,7 +2,7 @@ SERVICE:=cinkstone-proto
 COMMIT_ID:=$(shell git rev-parse --short HEAD)
 REVISION_ID:=$(shell git rev-list --count HEAD)
 BRANCH:=$(shell git symbolic-ref --short HEAD)
-TAG:=$(shell git describe --tags --dirty | sed 's/-g[a-z0-9]\{7\}//')
+TAG:=$(shell git describe --tags | sed 's/-g[a-z0-9]\{7\}//')
 MESSAGE:=$(shell git log -1 --pretty=%B)
 
 VER_PROTOBUF:=3.6.1
@@ -70,8 +70,8 @@ js:
 		--js_out=import_style=commonjs:./out \
 		--grpc-web_out=import_style=commonjs,mode=grpcwebtext:./out \
 		./general/*.proto
-	echo ${TAG} >/tmp/tag
-	echo ${MESSAGE} >/tmp/message
+	@echo ${TAG} >/tmp/tag
+	@echo ${MESSAGE} >/tmp/message
 
 
 go:

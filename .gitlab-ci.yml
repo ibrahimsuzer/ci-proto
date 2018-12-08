@@ -98,7 +98,7 @@ js:
     # Generate Javascript files
     - make js
     # Clone and update javascript repository
-    - git clone --branch devel --single-branch https://${CINK_JOB_USER}:${CINK_JOB_TOKEN}@gitlab.com/CInkstone/cinkstone-proto/js.git js
+    - git clone --branch master --single-branch https://${CINK_JOB_USER}:${CINK_JOB_TOKEN}@gitlab.com/CInkstone/cinkstone-proto/js.git js
     - cp -Rfp docs/. out/docs
     - cp -Rfp out/. js
     # Set package version from temp file (created by "make js")
@@ -111,12 +111,12 @@ js:
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git commit -m "${MESSAGE}"
-    #- git tag -a "${TAG}" -m "${MESSAGE}"
+    - git tag -a "${TAG}" -m "${MESSAGE}"
     # Push the repo
-    - git push origin devel
+    - git push origin HEAD
 
   only:
-    - branches
+    - tags
   except:
     variables:
       - $DEPLOYMENT_DISABLED
