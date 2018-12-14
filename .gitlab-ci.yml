@@ -187,3 +187,25 @@ java-lite:
     - git push --tags origin HEAD
   only:
     - tags
+
+### PUBLISH JAVA CODE
+java:
+  extends:      .proto
+  variables:
+    LANG:       "java"
+    COPY_PATH:  "java/src/main/proto"
+  after_script:
+    ## Read output
+    - read TAG <temp/tag
+    - read MESSAGE <temp/message
+    ## Commit & tag its new version
+    - cd ${LANG}
+    - git add .
+    - git config --global user.name "${GITLAB_USER_NAME}"
+    - git config --global user.email "${GITLAB_USER_EMAIL}"
+    - git commit -m "${MESSAGE}"
+    - git tag -a "${TAG}" -m "${MESSAGE}"
+    ## Push the repo
+    - git push --tags origin HEAD
+  only:
+    - tags
