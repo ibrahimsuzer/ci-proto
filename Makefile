@@ -103,7 +103,10 @@ java-lite:
 	@echo ${MESSAGE} >/tmp/message
 
 java:
-
+	@mkdir -p out
+	cp -Rfp --parents ./general/*.proto ./out
+	@echo ${TAG} >/tmp/tag
+	@echo ${MESSAGE} >/tmp/message
 obj-c:
 
 swift:
