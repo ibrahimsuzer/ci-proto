@@ -115,7 +115,7 @@ pages:
     - cp -fp /tmp/message temp/message
     ## Copy all into out folder
     - cp -Rfp docs/. out/docs
-    - cp -Rfp out/. ${LANG}
+    - cp -Rfp out/. ${COPY_PATH}
   except:
     variables:
       - $DEPLOYMENT_DISABLED
@@ -125,6 +125,7 @@ js:
   extends:      .proto
   variables:
     LANG:       "js"
+    COPY_PATH:  "js"
   after_script:
     ## Read output
     - read TAG <temp/tag
@@ -148,6 +149,29 @@ go:
   extends:      .proto
   variables:
     LANG:       "go"
+    COPY_PATH:  "go"
+  after_script:
+    ## Read output
+    - read TAG <temp/tag
+    - read MESSAGE <temp/message
+    ## Commit & tag its new version
+    - cd ${LANG}
+    - git add .
+    - git config --global user.name "${GITLAB_USER_NAME}"
+    - git config --global user.email "${GITLAB_USER_EMAIL}"
+    - git commit -m "${MESSAGE}"
+    - git tag -a "${TAG}" -m "${MESSAGE}"
+    ## Push the repo
+    - git push --tags origin HEAD
+  only:
+    - tags
+
+### PUBLISH JAVA LITE (ANDROID) CODE
+java-lite:
+  extends:      .proto
+  variables:
+    LANG:       "java-lite"
+    COPY_PATH:  "java-lite/src/main/proto"
   after_script:
     ## Read output
     - read TAG <temp/tag

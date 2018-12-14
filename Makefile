@@ -70,6 +70,7 @@ js:
 		-I. \
 		--js_out=import_style=commonjs:./out \
 		--grpc-web_out=import_style=commonjs,mode=grpcwebtext:./out \
+		--include_imports --include_source_info --descriptor_set_out=./out/proto.pb \
 		./general/*.proto
 	@echo ${TAG} >/tmp/tag
 	@echo ${MESSAGE} >/tmp/message
@@ -90,7 +91,14 @@ go:
 		--go_out=plugins=grpc:./out \
 		--grpc-gateway_out=logtostderr=false:./out \
 		--swagger_out=logtostderr=false:./out \
+		--include_imports --include_source_info --descriptor_set_out=./out/proto.pb \
 		./general/*.proto
+	@echo ${TAG} >/tmp/tag
+	@echo ${MESSAGE} >/tmp/message
+
+java-lite:
+	@mkdir -p out
+	cp -Rfp --parents ./general/*.proto ./out
 	@echo ${TAG} >/tmp/tag
 	@echo ${MESSAGE} >/tmp/message
 
