@@ -5,9 +5,9 @@ BRANCH:=$(shell git symbolic-ref --short HEAD)
 TAG:=$(shell git describe --tags | sed 's/-g[a-z0-9]\{7\}//')
 MESSAGE:=$(shell git log -1 --pretty=%B)
 
-VER_PROTOBUF:=3.6.1
-VER_GRPCWEB:=1.0.3
-VER_GRPC-GO:="1.2.0"
+VER_PROTOBUF:=3.7.1
+VER_GRPCWEB:=1.0.4
+VER_GRPC-GO:="1.21.0"
 
 all: cleanup
 
@@ -79,9 +79,6 @@ js:
 go:
 	@mkdir -p out
 	@go get github.com/golang/protobuf/protoc-gen-go
-	# Until go modules support installing binaries to GOBIN
-	# https://github.com/golang/go/issues/24250
-	@GO111MODULE=off go get github.com/golang/protobuf/protoc-gen-go
 	@go get github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
 	@go get github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
 
@@ -95,20 +92,5 @@ go:
 		./general/*.proto
 	@echo ${TAG} >/tmp/tag
 	@echo ${MESSAGE} >/tmp/message
-
-java-lite:
-	@mkdir -p out
-	cp -Rfp --parents ./general/*.proto ./out
-	@echo ${TAG} >/tmp/tag
-	@echo ${MESSAGE} >/tmp/message
-
-java:
-	@mkdir -p out
-	cp -Rfp --parents ./general/*.proto ./out
-	@echo ${TAG} >/tmp/tag
-	@echo ${MESSAGE} >/tmp/message
-obj-c:
-
-swift:
 
 cleanup:

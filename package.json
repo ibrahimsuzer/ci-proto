@@ -8,10 +8,6 @@
   "private": true,
   "homepage": "http://cinkstone.com/",
   "dependencies": {
-    "google-proto-files": "0.18.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@gitlab.com:CInkstone/cinkstone-proto/proto.git"
+    "google-proto-files": "1.0.1"
   }
 }
