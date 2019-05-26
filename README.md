@@ -1,1 +1,1 @@
-# cinkstone-proto/proto
+# ci-proto/proto

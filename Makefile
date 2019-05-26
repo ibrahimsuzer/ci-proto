@@ -1,4 +1,4 @@
-SERVICE:=cinkstone-proto
+SERVICE:=ci-proto
 COMMIT_ID:=$(shell git rev-parse --short HEAD)
 REVISION_ID:=$(shell git rev-list --count HEAD)
 BRANCH:=$(shell git symbolic-ref --short HEAD)
