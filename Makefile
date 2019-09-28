@@ -9,18 +9,25 @@ VER_PROTOBUF:=3.7.1
 VER_GRPCWEB:=1.0.4
 VER_GRPC-GO:="1.21.0"
 
+## PROTO FILES TO GENERATE USE
+FILES :=./general/*.proto
+#FILES +=
+
 all: cleanup
 
-install:
+install: install-protoc install-proto install-web
+
+install-protoc:
 	## Protoc install
 	wget https://github.com/protocolbuffers/protobuf/releases/download/v${VER_PROTOBUF}/protoc-${VER_PROTOBUF}-linux-x86_64.zip -O ./protoc.zip
 	unzip -o ./protoc.zip -d /usr/local bin/protoc
 	chmod +x /usr/local/bin/protoc
 
+install-proto:
 	## Install NPM Packages
 	npm install
 
-
+install-web:
 	## Install GRPC Web Plugin
 	wget https://github.com/grpc/grpc-web/releases/download/${VER_GRPCWEB}/protoc-gen-grpc-web-${VER_GRPCWEB}-linux-x86_64 -O ./protoc-gen-grpc-web
 	mv -n ./protoc-gen-grpc-web /usr/local/bin/protoc-gen-grpc-web
@@ -32,13 +39,10 @@ lint:
 		-I=./node_modules/google-proto-files \
 		-I. \
 		--lint_out=. \
-		./general/*.proto
+		${FILES}
 
 lock:
-	@go get github.com/nilslice/protolock
-    # Until go modules support installing binaries to GOBIN
-    # https://github.com/golang/go/issues/24250
-	@GO111MODULE=off go get github.com/nilslice/protolock/...
+	@go get -u github.com/nilslice/protolock/...
 	@protolock status
 
 doc:
@@ -49,19 +53,19 @@ doc:
 		-I. \
 		--doc_out=./docs \
 		--doc_opt=html,proto.html \
-		./general/*.proto
+		${FILES}
 	@protoc \
 		-I=./node_modules/google-proto-files \
 		-I. \
 		--doc_out=./docs \
 		--doc_opt=json,proto.json \
-		./general/*.proto
+		${FILES}
 	@protoc \
 		-I=./node_modules/google-proto-files \
 		-I. \
 		--doc_out=./docs \
 		--doc_opt=markdown,proto.md \
-		./general/*.proto
+		${FILES}
 
 js:
 	@mkdir -p out
@@ -71,10 +75,9 @@ js:
 		--js_out=import_style=commonjs:./out \
 		--grpc-web_out=import_style=commonjs,mode=grpcwebtext:./out \
 		--include_imports --include_source_info --descriptor_set_out=./out/proto.pb \
-		./general/*.proto
+		${FILES}
 	@echo ${TAG} >/tmp/tag
 	@echo ${MESSAGE} >/tmp/message
-
 
 go:
 	@mkdir -p out
@@ -89,7 +92,7 @@ go:
 		--grpc-gateway_out=logtostderr=false:./out \
 		--swagger_out=logtostderr=false:./out \
 		--include_imports --include_source_info --descriptor_set_out=./out/proto.pb \
-		./general/*.proto
+		${FILES}
 	@echo ${TAG} >/tmp/tag
 	@echo ${MESSAGE} >/tmp/message
 
