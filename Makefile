@@ -52,19 +52,19 @@ doc:
 		-I=./node_modules/google-proto-files \
 		-I. \
 		--doc_out=./docs \
-		--doc_opt=html,proto.html \
+		--doc_opt=html,index.html \
 		${FILES}
 	@protoc \
 		-I=./node_modules/google-proto-files \
 		-I. \
 		--doc_out=./docs \
-		--doc_opt=json,proto.json \
+		--doc_opt=json,index.json \
 		${FILES}
 	@protoc \
 		-I=./node_modules/google-proto-files \
 		-I. \
 		--doc_out=./docs \
-		--doc_opt=markdown,proto.md \
+		--doc_opt=markdown,index.md \
 		${FILES}
 
 js:
