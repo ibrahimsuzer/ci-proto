@@ -10,5 +10,6 @@ jobs:
       image: golang:1.13.3-alpine
     steps:
       - run: |
+              apk add --update make
               make install-prototool
 
