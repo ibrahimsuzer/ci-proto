@@ -15,6 +15,7 @@ jobs:
         run:               |
                            apk add --update make git
                            git describe --tags
+                           git symbolic-ref --short HEAD
                            pwd
                            make install-prototool
                            prototool version
