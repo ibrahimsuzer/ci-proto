@@ -7,4 +7,5 @@ import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger"
 	_ "github.com/nilslice/protolock"
 	_ "github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc"
+	_ "github.com/uber/prototool/cmd/prototool"
 )

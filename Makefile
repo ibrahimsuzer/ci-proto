@@ -17,6 +17,9 @@ all: cleanup
 
 install: install-protoc install-proto install-web
 
+install-prototool:
+	go get github.com/uber/prototool/cmd/prototool
+
 install-protoc:
 	## Protoc install
 	wget https://github.com/protocolbuffers/protobuf/releases/download/v${VER_PROTOBUF}/protoc-${VER_PROTOBUF}-linux-x86_64.zip -O ./protoc.zip
