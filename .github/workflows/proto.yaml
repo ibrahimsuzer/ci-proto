@@ -13,8 +13,8 @@ jobs:
         uses:              actions/checkout@v1
       - name:              Install
         run:               |
-                           git describe --tags
                            apk add --update make git
+                           git describe --tags
                            pwd
                            make install-prototool
                            prototool version
