@@ -9,8 +9,9 @@ jobs:
     container:
       image: golang:1.13.3-alpine
     steps:
-      - name:              Install
+      - name:              Checkout
         uses:              actions/checkout@v1
+      - name:              Install
         working-directory: $GITHUB_WORKSPACE
         run:               |
                            apk add --update make
