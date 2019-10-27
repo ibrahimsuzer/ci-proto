@@ -9,7 +9,10 @@ jobs:
     container:
       image: golang:1.13.3-alpine
     steps:
-      - run: |
-              apk add --update make
-              make install-prototool
+      - name: Install
+      uses: actions/checkout@v1
+      working-directory: $GITHUB_WORKSPACE
+      run: apk add --update make
+      run: pwd
+      run: make install-prototool
 
