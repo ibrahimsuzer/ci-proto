@@ -1,0 +1,13 @@
+name: Checks
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Lint
+        uses: docker://golang:1.13.3-alpine
+        run: |
+              echo Add other actions to build,
+              echo test, and deploy your project.
